@@ -1,9 +1,7 @@
 import org.example.ShoppingBasket;
 import org.example.Fruit;
-import org.example.Item;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -11,30 +9,28 @@ class TestShoppingBasket {
 
     @Test
     @DisplayName("Test to add item to basket.")
-
     void testAddItemToBasket() {
         ShoppingBasket basket = new ShoppingBasket();
 
-        Fruit apple = new Fruit("Apple", 0.50);
+        Fruit apple = Fruit.APPLE;
 
         basket.addToBasket(apple);
 
-        assertEquals(1,basket.getSize());
+        assertEquals(1, basket.getSize());
     }
-
 
     @Test
     @DisplayName("Test to see what items are in basket.")
     void testSeeBasket() {
         ShoppingBasket basket = new ShoppingBasket();
 
-        Fruit apple = new Fruit("Apple", 0.50);
-        Fruit banana = new Fruit("Banana", 0.70);
+        Fruit apple = Fruit.APPLE;
+        Fruit banana = Fruit.BANANA;
 
         basket.addToBasket(apple);
         basket.addToBasket(banana);
 
-        assertEquals("Apple Banana",basket.seeBasketItems());
+        assertEquals("Apple Banana", basket.seeBasketItems());
     }
 
     @Test
@@ -42,14 +38,14 @@ class TestShoppingBasket {
     void testRemoveItemFromBasket() {
         ShoppingBasket basket = new ShoppingBasket();
 
-        Fruit apple = new Fruit("Apple", 0.50);
-        Fruit banana = new Fruit("Banana", 0.70);
+        Fruit apple = Fruit.APPLE;
+        Fruit banana = Fruit.BANANA;
 
         basket.addToBasket(apple);
         basket.addToBasket(banana);
         basket.removeFromBasket(apple);
 
-        assertEquals("Banana",basket.seeBasketItems());
+        assertEquals("Banana", basket.seeBasketItems());
     }
 
     @Test
@@ -57,17 +53,17 @@ class TestShoppingBasket {
     void testGetBasketSum() {
         ShoppingBasket basket = new ShoppingBasket();
 
-        Fruit apple = new Fruit("Apple", 0.50);
-        Fruit banana = new Fruit("Banana", 0.70);
+        Fruit apple = Fruit.APPLE;
+        Fruit banana = Fruit.BANANA;
 
         basket.addToBasket(apple);
         basket.addToBasket(banana);
 
-        assertEquals(1.20,basket.getBasketSum());
+        assertEquals(apple.getPrice() + banana.getPrice(), basket.getBasketSum(), 0.001);
 
-        Fruit pear = new Fruit("Pear", 0.40);
-        basket.addToBasket(pear);
+        Fruit cherry = Fruit.CHERRY;
+        basket.addToBasket(cherry);
 
-        assertEquals(1.60,basket.getBasketSum());
+        assertEquals(apple.getPrice() + banana.getPrice() + cherry.getPrice(), basket.getBasketSum(), 0.001);
     }
 }

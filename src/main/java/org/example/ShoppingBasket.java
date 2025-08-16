@@ -10,6 +10,10 @@ public class ShoppingBasket {
         this.basketInv = new ArrayList<Item>(5);
     }
 
+    public List<Item> getItems() {
+        return new ArrayList<>(basketInv);
+    }
+
     public void addToBasket(Item item){
         this.basketInv.add(item);
     }
@@ -28,6 +32,18 @@ public class ShoppingBasket {
             total += i.getPrice();
         }
         return total;
+    }
+
+    public double calculateTotalWithDiscounts(List<Discount> discounts) {
+        double totalDiscount = 0;
+        for (Discount discount : discounts) {
+            double amount = discount.apply(this);
+            if (amount > 0) {
+                System.out.println("Applied: " + discount.getDescription() + " (-£" + String.format("%.2f", amount) + ")");
+                totalDiscount += amount;
+            }
+        }
+        return getBasketSum() - totalDiscount;
     }
 
     public String seeBasketItems(){

@@ -1,18 +1,19 @@
 package org.example;
 
-public class Fruit implements Item{
-    private String name;
-    private double price;
+public enum Fruit implements Item {
+    APPLE("Apple", 1.0),
+    BANANA("Banana", 0.5),
+    CHERRY("Cherry", 0.2),
+    MANGO("Mango", 1.5);
 
-    public Fruit(String name, double price){
+    private final String name;
+    private final double price;
+
+    Fruit(String name, double price) {
         this.name = name;
         this.price = price;
     }
 
-    public double getPrice(){
-        return this.price;
-    }
-    public String getName(){
-        return this.name;
-    }
+    public String getName() { return name; }
+    public double getPrice() { return price; }
 }
