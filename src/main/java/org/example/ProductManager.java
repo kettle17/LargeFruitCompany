@@ -1,8 +1,11 @@
 package org.example;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 
 public class ProductManager {
+    private static final Logger logger = LoggerFactory.getLogger(ProductManager.class);
 
     private final ProductRepository repository;
 
@@ -23,23 +26,26 @@ public class ProductManager {
     }
 
     public double calculateTotalWithDiscounts(ShoppingBasket basket) {
-        double total = basket.getBasketSum();
+        double subtotal = basket.getBasketSum();
+        logger.info("Initial basket total: £{}", String.format("%.2f", subtotal));
 
-        for (Item item : basket.getItems()) {
-            if (item instanceof Fruit fruit) {
-                Discount[] discounts = getDiscountsForFruit(fruit);
-                for (Discount d : discounts) {
-                    total -= d.apply(basket);
-                }
+        double totalDiscount = 0.0;
+
+        for (Discount discount : repository.getAllDiscounts()) {
+            double discountAmount = discount.apply(basket);
+
+            if (discountAmount > 0) {
+                logger.info("Applied discount: {} -> -£{}",
+                        discount.getDescription(),
+                        String.format("%.2f", discountAmount));
+                totalDiscount += discountAmount;
+            } else {
+                logger.info("Skipped discount: {}", discount.getDescription());
             }
         }
 
-        for (Discount d : repository.getAllDiscounts()) {
-            if (d instanceof BigSpenderDiscount) {
-                total -= d.apply(basket);
-            }
-        }
-
-        return total;
+        double finalTotal = subtotal - totalDiscount;
+        logger.info("Final basket total after discounts: £{}", String.format("%.2f", finalTotal));
+        return finalTotal;
     }
 }
